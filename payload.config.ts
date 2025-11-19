@@ -8,7 +8,34 @@ export default buildConfig({
   editor: lexicalEditor(),
 
   // Define and configure your collections in this array
-  collections: [],
+  collections: [
+    {
+      slug: 'products',
+      fields: [
+        {
+          name: 'title',
+          type: 'text',
+        },
+        {
+          name: 'description',
+          type: 'text',
+        },
+        {
+          name: 'price',
+          type: 'number',
+        },
+        {
+          name: 'category',
+          type: 'text',
+        },
+        {
+          name: 'images',
+          type: 'upload',
+          relationTo: 'products',
+        }
+      ],
+    }
+  ],
 
   // Your Payload secret - should be a complex and secure string, unguessable
   secret: process.env.PAYLOAD_SECRET || '',
