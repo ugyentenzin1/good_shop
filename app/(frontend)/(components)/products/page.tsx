@@ -48,7 +48,7 @@ export default function ProductList() {
               <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                 <div className="flex items-center gap-4">
                   <p className="text-sm text-gray-600">
-                    <span className="font-semibold text-gray-900">{products?.length}</span> products found
+                    <span className="font-semibold text-gray-900 text-2xl">{products?.length}</span> Products Found
                   </p>
                 </div>
 
