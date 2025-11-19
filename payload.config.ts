@@ -2,6 +2,7 @@ import sharp from 'sharp'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { buildConfig } from 'payload'
+import { PRODUCTS_COLLECTION } from './collections/collections'
 
 export default buildConfig({
   // If you'd like to use Rich Text, pass your editor here
@@ -9,48 +10,8 @@ export default buildConfig({
 
   // Define and configure your collections in this array
   collections: [
-    {
-      slug: 'products',
-      fields: [
-        {
-          name: 'title',
-          type: 'text',
-        },
-        {
-          name: 'description',
-          type: 'text',
-        },
-        {
-          name: 'price',
-          type: 'number',
-        },
-        {
-          name: 'category',
-          type: 'text',
-        },
-        {
-          name: 'featured',
-          type: 'radio',
-          options: [
-            {
-              label: 'Yes',
-              value: 'yes',
-            },
-            {
-              label: 'No',
-              value: 'no',
-            },
-          ],
-        },
-        {
-          name: 'images',
-          type: 'upload',
-          relationTo: 'products',
-        }
-      ],
-    }
+    PRODUCTS_COLLECTION,
   ],
-
   // Your Payload secret - should be a complex and secure string, unguessable
   secret: process.env.PAYLOAD_SECRET || '',
   // Whichever Database Adapter you're using should go here

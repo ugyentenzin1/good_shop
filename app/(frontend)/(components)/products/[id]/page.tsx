@@ -153,32 +153,6 @@ export default async function ProductPage({ params }: { params: { id: string } }
           </div>
         </div>
 
-        {/* Product Details Tabs */}
-        <div className="bg-white rounded-2xl shadow-sm p-8 mb-16">
-          <div className="border-b border-gray-200 mb-6">
-            <div className="flex gap-8">
-              <button className="pb-4 border-b-2 border-blue-600 text-blue-600 font-semibold">
-                Details
-              </button>
-              <button className="pb-4 border-b-2 border-transparent text-gray-600 hover:text-gray-900 font-semibold">
-                Reviews
-              </button>
-              <button className="pb-4 border-b-2 border-transparent text-gray-600 hover:text-gray-900 font-semibold">
-                Shipping
-              </button>
-            </div>
-          </div>
-          <div className="prose max-w-none">
-            <h3 className="text-xl font-semibold text-gray-900 mb-4">Product Specifications</h3>
-            <ul className="space-y-2 text-gray-600">
-              <li><strong>SKU:</strong> {product.id}</li>
-              <li><strong>Category:</strong> {product.category || 'N/A'}</li>
-              <li><strong>Availability:</strong> <span className="text-green-600">In Stock</span></li>
-              <li><strong>Shipping:</strong> Worldwide delivery available</li>
-            </ul>
-          </div>
-        </div>
-
         {/* Related Products */}
         {relatedProducts.length > 0 && (
           <div>
