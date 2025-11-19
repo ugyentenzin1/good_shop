@@ -29,6 +29,20 @@ export default buildConfig({
           type: 'text',
         },
         {
+          name: 'featured',
+          type: 'radio',
+          options: [
+            {
+              label: 'Yes',
+              value: 'yes',
+            },
+            {
+              label: 'No',
+              value: 'no',
+            },
+          ],
+        },
+        {
           name: 'images',
           type: 'upload',
           relationTo: 'products',

@@ -11,6 +11,11 @@ export default async function Home() {
   const { docs: products } = await payload.find({
     collection: 'products',
     limit: 8,
+    where: {
+      featured: {
+        equals: 'yes',
+      },
+    },
   })
 
   return (
@@ -33,12 +38,6 @@ export default async function Home() {
                 >
                   Shop Now
                   <ArrowRight className="ml-2 h-5 w-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link
-                  href="/deals"
-                  className="inline-flex items-center justify-center px-8 py-4 bg-transparent border-2 border-white text-white font-semibold rounded-lg hover:bg-white hover:text-blue-600 transition"
-                >
-                  View Deals
                 </Link>
               </div>
             </div>

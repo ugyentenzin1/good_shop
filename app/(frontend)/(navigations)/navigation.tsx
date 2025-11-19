@@ -33,31 +33,6 @@ export default function Navigation() {
             <Link href="/products" className="text-gray-700 hover:text-blue-600 font-medium transition">
               Products
             </Link>
-            
-            {/* Categories Dropdown */}
-            <div className="relative group">
-              <button className="text-gray-700 hover:text-blue-600 font-medium transition">
-                Categories
-              </button>
-              <div className="absolute left-0 mt-2 w-48 bg-white rounded-lg shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200">
-                <Link href="/categories/electronics" className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600">
-                  Electronics
-                </Link>
-                <Link href="/categories/fashion" className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600">
-                  Fashion
-                </Link>
-                <Link href="/categories/home" className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600">
-                  Home & Living
-                </Link>
-                <Link href="/categories/sports" className="block px-4 py-2 text-gray-700 hover:bg-gray-50 hover:text-blue-600">
-                  Sports
-                </Link>
-              </div>
-            </div>
-
-            <Link href="/deals" className="text-red-600 hover:text-red-700 font-medium transition">
-              Deals
-            </Link>
             <Link href="/about" className="text-gray-700 hover:text-blue-600 font-medium transition">
               About
             </Link>
@@ -81,11 +56,6 @@ export default function Navigation() {
             <button className="hidden md:flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition">
               <Heart className="h-5 w-5 text-gray-700" />
             </button>
-
-            {/* Account */}
-            <Link href="/account" className="hidden md:flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition">
-              <User className="h-5 w-5 text-gray-700" />
-            </Link>
 
             {/* Shopping Cart */}
             <Link href="/cart" className="relative flex items-center justify-center w-10 h-10 rounded-full hover:bg-gray-100 transition">
