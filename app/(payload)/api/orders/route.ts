@@ -39,7 +39,8 @@ export async function POST(request: NextRequest) {
     const payload = await getPayload({ config })
     const body: { items: CartItem[]; orderData: OrderData } = await request.json()
 
-    const { items, orderData } = body
+    const { items, orderData } = body;
+    console.log('Creating order', items, orderData, body)
 
     // Calculate totals
     const subtotal = items.reduce(
