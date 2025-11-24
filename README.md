@@ -35,14 +35,29 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 ### Environment Variables Setup
 
-Before deploying, make sure to set the following environment variables in your Vercel dashboard:
+Before deploying, you MUST set the following environment variables in your Vercel project dashboard:
 
 1. `PAYLOAD_SECRET` - A complex and secure string for PayloadCMS
 2. `DATABASE_URI` - Your MongoDB connection string (must start with `mongodb://` or `mongodb+srv://`)
 
-You can find these in your `.env` file locally. In Vercel:
-1. Go to your project dashboard
-2. Navigate to Settings → Environment Variables
-3. Add each variable with its corresponding value
+#### How to set environment variables in Vercel:
+
+1. Go to your Vercel project dashboard
+2. Click on the "Settings" tab
+3. Click on "Environment Variables" in the left sidebar
+4. Click "Add New"
+5. Set the following variables:
+   - **Name:** `PAYLOAD_SECRET`
+   - **Value:** `neru87834unejn99834i39` (copy from your local `.env` file)
+   - **Environment:** `Production`, `Preview`, `Development`
+   - Click "Add"
+
+6. Repeat for `DATABASE_URI`:
+   - **Name:** `DATABASE_URI`
+   - **Value:** `mongodb+srv://ugyen_db_user:Ojentaguero10@cluster0.isqncmf.mongodb.net/e-commerce-cms?retryWrites=true&w=majority` (copy from your local `.env` file)
+   - **Environment:** `Production`, `Preview`, `Development`
+   - Click "Add"
+
+**Important:** Make sure to copy the exact values from your local `.env` file. The deployment will fail if these environment variables are not set.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
