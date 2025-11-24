@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { ShoppingCart, Heart, Star, Truck, Shield, ArrowLeft } from 'lucide-react'
 import type { Product } from '@/payload-types'
+import Image from 'next/image'
 import QuantitySelector from './QuantitySelector'
 import AddToCartButton from './AddToCartButton'
 
@@ -19,7 +20,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
       collection: 'products',
       id: id,
     })
-  } catch (error) {
+  } catch {
     notFound()
   }
 
@@ -33,7 +34,19 @@ export default async function ProductPage({ params }: { params: { id: string } }
       },
     },
   })
-
+  
+  const populatedRelatedProducts = await Promise.all(
+    relatedProducts.map(async (relatedProduct) => {
+      if (relatedProduct.images && typeof relatedProduct.images === 'string') {
+        const imageDoc = await payload.findByID({
+          collection: 'media',
+          id: relatedProduct.images,
+        })
+        return { ...relatedProduct, images: imageDoc }
+      }
+      return relatedProduct
+    })
+  )
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Breadcrumb */}
@@ -67,11 +80,14 @@ export default async function ProductPage({ params }: { params: { id: string } }
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 mb-16">
           {/* Product Image */}
           <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
-            <div className="aspect-square relative bg-gradient-to-br from-gray-100 to-gray-200">
-              {/* Image placeholder */}
-              <div className="absolute inset-0 flex items-center justify-center">
-                <ShoppingCart className="h-32 w-32 text-gray-400" />
-              </div>
+            <div className="aspect-square relative bg-linear-to-br from-gray-100 to-gray-200">
+              {product.images && typeof product.images === 'object' && 'url' in product.images ? (
+                <Image src={product.images.url || ''} alt={product.images.alt || ''} fill className="object-cover" />
+              ) : (
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <ShoppingCart className="h-32 w-32 text-gray-400" />
+                </div>
+              )}
               {/* Wishlist Button */}
               <button className="absolute top-4 right-4 p-3 bg-white rounded-full shadow-md hover:bg-red-50 transition group/wishlist">
                 <Heart className="h-6 w-6 text-gray-600 group-hover/wishlist:text-red-500 group-hover/wishlist:fill-red-500 transition" />
@@ -154,7 +170,7 @@ export default async function ProductPage({ params }: { params: { id: string } }
         </div>
 
         {/* Related Products */}
-        {relatedProducts.length > 0 && (
+        {populatedRelatedProducts.length > 0 && (
           <div>
             <div className="flex items-center justify-between mb-8">
               <h2 className="text-3xl font-bold text-gray-900">You May Also Like</h2>
@@ -167,15 +183,21 @@ export default async function ProductPage({ params }: { params: { id: string } }
               </Link>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedProducts.map((relatedProduct: Product) => (
+              {populatedRelatedProducts.map((relatedProduct: Product) => (
                 <Link
                   key={relatedProduct.id}
                   href={`/products/${relatedProduct.id}`}
                   className="group bg-white rounded-xl overflow-hidden shadow-sm hover:shadow-xl transition-all duration-300"
                 >
                   <div className="aspect-square bg-gray-200 relative overflow-hidden">
-                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 group-hover:scale-110 transition-transform duration-300">
-                      <ShoppingCart className="h-12 w-12 text-gray-400" />
+                    <div className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-gray-100 to-gray-200 group-hover:scale-110 transition-transform duration-300">
+                        {relatedProduct.images && typeof relatedProduct.images === 'object' && 'url' in relatedProduct.images ? (
+                          <Image src={relatedProduct.images.url || ''} alt={relatedProduct.images.alt || ''} fill className="object-cover" />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <ShoppingCart className="h-12 w-12 text-gray-400" />
+                          </div>
+                        )}
                     </div>
                   </div>
                   <div className="p-4">

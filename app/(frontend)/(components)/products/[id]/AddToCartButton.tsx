@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { ShoppingCart, Share2, Check } from 'lucide-react'
 import type { Product } from '@/payload-types'
 
@@ -10,6 +10,11 @@ interface AddToCartButtonProps {
 export default function AddToCartButton({ product }: AddToCartButtonProps) {
   const [isAdding, setIsAdding] = useState(false)
   const [isAdded, setIsAdded] = useState(false)
+  const isClientRef = useRef(false)
+
+  useEffect(() => {
+    isClientRef.current = true
+  }, [])
 
   const handleAddToCart = async () => {
     setIsAdding(true)
@@ -30,6 +35,8 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
   }
 
   const handleShare = async () => {
+    if (!isClientRef.current) return // Prevent execution during SSR
+
     if (navigator.share) {
       try {
         await navigator.share({

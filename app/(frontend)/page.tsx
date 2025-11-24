@@ -2,7 +2,8 @@ import Link from 'next/link'
 import { ArrowRight, ShoppingBag, Truck, Shield, Headphones, Star } from 'lucide-react'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import type { Product } from '@/payload-types'
+import type { Product } from '@/payload-types';
+import Image from 'next/image';
 
 export default async function Home() {
   const payload = await getPayload({ config })
@@ -18,6 +19,18 @@ export default async function Home() {
     },
   })
 
+  const populatedProducts = await Promise.all(
+    products.map(async (product) => {
+      if (product.images && typeof product.images === 'string') {
+        const imageDoc = await payload.findByID({
+          collection: 'media',
+          id: product.images,
+        })
+        return { ...product, images: imageDoc }
+      }
+      return product
+    })
+  )
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
@@ -153,9 +166,9 @@ export default async function Home() {
             </Link>
           </div>
 
-          {products.length > 0 ? (
+          {populatedProducts.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {products.map((product: Product) => (
+              {populatedProducts.map((product: Product) => (
                 <Link
                   key={product.id}
                   href={`/products/${product.id}`}
@@ -163,9 +176,15 @@ export default async function Home() {
                 >
                   <div className="aspect-square bg-gray-200 relative overflow-hidden">
                     {/* Placeholder for product image */}
-                    <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 group-hover:scale-110 transition-transform duration-300">
-                      <ShoppingBag className="h-16 w-16 text-gray-400" />
-                    </div>
+                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 group-hover:scale-110 transition-transform duration-300">
+                        {product.images && typeof product.images === 'object' && 'url' in product.images ? (
+                          <Image src={product.images.url || ''} alt={product.images.alt || ''} fill className="object-cover" />
+                        ) : (
+                          <div className="absolute inset-0 flex items-center justify-center">
+                            <ShoppingBag className="h-16 w-16 text-gray-400" />
+                          </div>
+                        )}
+                      </div>
                   </div>
                   <div className="p-4">
                     <h3 className="font-semibold text-gray-900 mb-2 line-clamp-2 group-hover:text-blue-600 transition">
