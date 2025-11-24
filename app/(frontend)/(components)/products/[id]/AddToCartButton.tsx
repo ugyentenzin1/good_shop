@@ -2,12 +2,14 @@
 import { useState, useEffect, useRef } from 'react'
 import { ShoppingCart, Share2, Check } from 'lucide-react'
 import type { Product } from '@/payload-types'
+import { useCart } from '@/app/(frontend)/(context)/cart-context'
 
 interface AddToCartButtonProps {
   product: Product
 }
 
 export default function AddToCartButton({ product }: AddToCartButtonProps) {
+  const { addToCart } = useCart();
   const [isAdding, setIsAdding] = useState(false)
   const [isAdded, setIsAdded] = useState(false)
   const isClientRef = useRef(false)
@@ -18,16 +20,16 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
 
   const handleAddToCart = async () => {
     setIsAdding(true)
-    
-    // Simulate API call
+
+    // Simulate API call delay
     await new Promise(resolve => setTimeout(resolve, 500))
-    
-    // TODO: Implement actual cart functionality
-    console.log('Adding to cart:', product)
-    
+
+    // Add to cart using context
+    addToCart(product)
+
     setIsAdding(false)
     setIsAdded(true)
-    
+
     // Reset after 2 seconds
     setTimeout(() => {
       setIsAdded(false)

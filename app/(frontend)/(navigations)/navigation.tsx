@@ -2,10 +2,12 @@
 import Link from 'next/link'
 import { useState } from 'react'
 import { ShoppingCart, Search, Menu, X, User, Heart } from 'lucide-react';
+import { useCart } from '../(context)/cart-context';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
-  const [cartCount, setCartCount] = useState(0) // Replace with actual cart state
+  const { state } = useCart()
+  const cartCount = state.totalItems
 
   return (
     <nav className="sticky top-0 z-50 bg-white shadow-sm border-b border-gray-200">

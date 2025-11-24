@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { ShoppingBag, Grid, List, Heart, ShoppingCart } from 'lucide-react'
 import type { Product } from '@/payload-types'
 import Image from 'next/image'
+import { useCart } from '../../(context)/cart-context'
 
 interface ProductListClientProps {
   products: Product[]
@@ -11,6 +12,7 @@ interface ProductListClientProps {
 
 export default function ProductListClient({ products }: ProductListClientProps) {
   const [viewMode, setViewMode] = useState<'grid' | 'list'>('grid');
+  const { addToCart } = useCart();
 
   return (
     <>
@@ -86,7 +88,10 @@ export default function ProductListClient({ products }: ProductListClientProps) 
                     <span className="text-2xl font-bold text-gray-900">
                       ${product.price?.toFixed(2) || '0.00'}
                     </span>
-                    <button className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium">
+                    <button
+                      onClick={() => addToCart(product)}
+                      className="flex items-center gap-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition text-sm font-medium"
+                    >
                       <ShoppingCart className="h-4 w-4" />
                       Add
                     </button>
