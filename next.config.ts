@@ -4,7 +4,7 @@ import type { NextConfig } from 'next'
 const nextConfig: NextConfig = {
   // Your Next.js config here
   images: {
-    domains: ['localhost'],
+    domains: ['localhost', 'https://goodshop-roan.vercel.app/'],
   },
   webpack: (config: any, { isServer }: { isServer: boolean }) => {
     // Add externals to prevent bundling of problematic packages
