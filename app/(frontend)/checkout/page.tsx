@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { ArrowLeft, CreditCard, Truck, Shield, CheckCircle } from 'lucide-react'
 import { useCart } from '../(context)/cart-context'
 import Image from 'next/image'
+import { createOrder, type OrderData } from '../utils/order-utils'
 
 interface FormData {
   // Customer Information
@@ -200,12 +201,46 @@ export default function CheckoutPage() {
     setIsSubmitting(true)
 
     try {
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 2000))
+      // Prepare order data
+      const orderData: OrderData = {
+        customerInfo: {
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          email: formData.email,
+          phone: formData.phone,
+        },
+        shippingAddress: {
+          street: formData.shippingAddress,
+          city: formData.shippingCity,
+          state: formData.shippingState,
+          zipCode: formData.shippingZipCode,
+          country: formData.shippingCountry,
+        },
+        billingAddress: {
+          sameAsShipping: formData.sameAsShipping,
+          street: formData.sameAsShipping ? formData.shippingAddress : formData.billingAddress,
+          city: formData.sameAsShipping ? formData.shippingCity : formData.billingCity,
+          state: formData.sameAsShipping ? formData.shippingState : formData.billingState,
+          zipCode: formData.sameAsShipping ? formData.shippingZipCode : formData.billingZipCode,
+          country: formData.sameAsShipping ? formData.shippingCountry : formData.billingCountry,
+        },
+        paymentInfo: {
+          method: formData.paymentMethod,
+          cardNumber: formData.cardNumber,
+          cardName: formData.cardName,
+          expiryDate: formData.expiryDate,
+        },
+      }
 
-      // Generate order number
-      const orderNum = `ORD-${Date.now()}`
-      setOrderNumber(orderNum)
+      // Create the order
+      const result = await createOrder(state.items, orderData)
+
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to create order')
+      }
+
+      // Set order number from response
+      setOrderNumber(result.orderNumber!)
 
       // Clear cart after successful order
       clearCart()
@@ -216,7 +251,7 @@ export default function CheckoutPage() {
       setIsSubmitted(true)
     } catch (error) {
       console.error('Order submission failed:', error)
-      // Handle error (show error message)
+      alert('Failed to place order. Please try again.')
     } finally {
       setIsSubmitting(false)
     }

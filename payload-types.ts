@@ -185,20 +185,66 @@ export interface Media {
  */
 export interface Order {
   id: string;
-  products?:
-    | {
-        product?: (string | Product)[] | null;
-        id?: string | null;
-      }[]
-    | null;
-  total?: number | null;
-  status?: ('pending' | 'shipped' | 'delivered') | null;
-  customer?: (string | null) | User;
-  address?: string | null;
-  paymentMethod?: ('card' | 'paypal') | null;
-  cardNumber?: string | null;
+  orderNumber: string;
+  status: 'pending' | 'processing' | 'shipped' | 'delivered' | 'cancelled';
+  items: {
+    product: string | Product;
+    quantity: number;
+    price: number;
+    id?: string | null;
+  }[];
+  subtotal: number;
+  shipping: number;
+  tax: number;
+  total: number;
+  customerInfo: {
+    firstName: string;
+    lastName: string;
+    email: string;
+    phone: string;
+  };
+  shippingAddress: {
+    street: string;
+    city: string;
+    state: string;
+    zipCode: string;
+    country: string;
+  };
+  billingAddress?: {
+    sameAsShipping?: boolean | null;
+    street?: string | null;
+    city?: string | null;
+    state?: string | null;
+    zipCode?: string | null;
+    country?: string | null;
+  };
+  paymentInfo: {
+    method: 'card' | 'paypal';
+    cardNumber?: string | null;
+    cardName?: string | null;
+    expiryDate?: string | null;
+    transactionId?: string | null;
+  };
+  orderDate: string;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-kv".
+ */
+export interface PayloadKv {
+  id: string;
+  key: string;
+  data:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -223,23 +269,6 @@ export interface User {
       }[]
     | null;
   password?: string | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "payload-kv".
- */
-export interface PayloadKv {
-  id: string;
-  key: string;
-  data:
-    | {
-        [k: string]: unknown;
-      }
-    | unknown[]
-    | string
-    | number
-    | boolean
-    | null;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -377,18 +406,57 @@ export interface MediaSelect<T extends boolean = true> {
  * via the `definition` "orders_select".
  */
 export interface OrdersSelect<T extends boolean = true> {
-  products?:
+  orderNumber?: T;
+  status?: T;
+  items?:
     | T
     | {
         product?: T;
+        quantity?: T;
+        price?: T;
         id?: T;
       };
+  subtotal?: T;
+  shipping?: T;
+  tax?: T;
   total?: T;
-  status?: T;
-  customer?: T;
-  address?: T;
-  paymentMethod?: T;
-  cardNumber?: T;
+  customerInfo?:
+    | T
+    | {
+        firstName?: T;
+        lastName?: T;
+        email?: T;
+        phone?: T;
+      };
+  shippingAddress?:
+    | T
+    | {
+        street?: T;
+        city?: T;
+        state?: T;
+        zipCode?: T;
+        country?: T;
+      };
+  billingAddress?:
+    | T
+    | {
+        sameAsShipping?: T;
+        street?: T;
+        city?: T;
+        state?: T;
+        zipCode?: T;
+        country?: T;
+      };
+  paymentInfo?:
+    | T
+    | {
+        method?: T;
+        cardNumber?: T;
+        cardName?: T;
+        expiryDate?: T;
+        transactionId?: T;
+      };
+  orderDate?: T;
   updatedAt?: T;
   createdAt?: T;
 }

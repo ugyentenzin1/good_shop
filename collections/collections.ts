@@ -81,57 +81,243 @@ export const PRODUCTS_COLLECTION: CollectionConfig = {
 
 export const ORDERS_COLLECTION: CollectionConfig = {
   slug: 'orders',
+  admin: {
+    useAsTitle: 'orderNumber',
+  },
   fields: [
+    // Order Information
     {
-      name: 'products',
+      name: 'orderNumber',
+      type: 'text',
+      required: true,
+      unique: true,
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'status',
+      type: 'select',
+      required: true,
+      defaultValue: 'pending',
+      options: [
+        { label: 'Pending', value: 'pending' },
+        { label: 'Processing', value: 'processing' },
+        { label: 'Shipped', value: 'shipped' },
+        { label: 'Delivered', value: 'delivered' },
+        { label: 'Cancelled', value: 'cancelled' },
+      ],
+    },
+
+    // Order Items
+    {
+      name: 'items',
       type: 'array',
+      required: true,
       fields: [
         {
           name: 'product',
           type: 'relationship',
           relationTo: 'products',
-          hasMany: true,
+          required: true,
+        },
+        {
+          name: 'quantity',
+          type: 'number',
+          required: true,
+          min: 1,
+        },
+        {
+          name: 'price',
+          type: 'number',
+          required: true,
+          admin: {
+            readOnly: true,
+          },
         },
       ],
+    },
+
+    // Pricing
+    {
+      name: 'subtotal',
+      type: 'number',
+      required: true,
+      admin: {
+        readOnly: true,
+      },
+    },
+    {
+      name: 'shipping',
+      type: 'number',
+      required: true,
+      defaultValue: 0,
+    },
+    {
+      name: 'tax',
+      type: 'number',
+      required: true,
+      defaultValue: 0,
     },
     {
       name: 'total',
       type: 'number',
+      required: true,
+      admin: {
+        readOnly: true,
+      },
     },
+
+    // Customer Information
     {
-      name: 'status',
-      type: 'select',
-      options: [
-        { label: 'Pending', value: 'pending' },
-        { label: 'Shipped', value: 'shipped' },
-        { label: 'Delivered', value: 'delivered' },
+      name: 'customerInfo',
+      type: 'group',
+      fields: [
+        {
+          name: 'firstName',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'lastName',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'email',
+          type: 'email',
+          required: true,
+        },
+        {
+          name: 'phone',
+          type: 'text',
+          required: true,
+        },
       ],
     },
+
+    // Shipping Address
     {
-      name: 'customer',
-      type: 'relationship',
-      relationTo: 'users',
-    },
-    {
-      name: 'address',
-      type: 'text',
-    },
-    {
-      name: 'paymentMethod',
-      type: 'select',
-      options: [
-        { label: 'Card', value: 'card' },
-        { label: 'PayPal', value: 'paypal' },
+      name: 'shippingAddress',
+      type: 'group',
+      fields: [
+        {
+          name: 'street',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'city',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'state',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'zipCode',
+          type: 'text',
+          required: true,
+        },
+        {
+          name: 'country',
+          type: 'text',
+          required: true,
+          defaultValue: 'United States',
+        },
       ],
     },
+
+    // Billing Address (optional, defaults to shipping)
     {
-      name: 'cardNumber',
-      type: 'text',
+      name: 'billingAddress',
+      type: 'group',
+      fields: [
+        {
+          name: 'sameAsShipping',
+          type: 'checkbox',
+          defaultValue: true,
+        },
+        {
+          name: 'street',
+          type: 'text',
+        },
+        {
+          name: 'city',
+          type: 'text',
+        },
+        {
+          name: 'state',
+          type: 'text',
+        },
+        {
+          name: 'zipCode',
+          type: 'text',
+        },
+        {
+          name: 'country',
+          type: 'text',
+          defaultValue: 'United States',
+        },
+      ],
     },
+
+    // Payment Information
     {
-      name: 'updatedAt',
+      name: 'paymentInfo',
+      type: 'group',
+      fields: [
+        {
+          name: 'method',
+          type: 'select',
+          required: true,
+          options: [
+            { label: 'Credit Card', value: 'card' },
+            { label: 'PayPal', value: 'paypal' },
+          ],
+        },
+        {
+          name: 'cardNumber',
+          type: 'text',
+          admin: {
+            condition: (data) => data.paymentInfo?.method === 'card',
+          },
+        },
+        {
+          name: 'cardName',
+          type: 'text',
+          admin: {
+            condition: (data) => data.paymentInfo?.method === 'card',
+          },
+        },
+        {
+          name: 'expiryDate',
+          type: 'text',
+          admin: {
+            condition: (data) => data.paymentInfo?.method === 'card',
+          },
+        },
+        {
+          name: 'transactionId',
+          type: 'text',
+          admin: {
+            readOnly: true,
+          },
+        },
+      ],
+    },
+
+    // Timestamps
+    {
+      name: 'orderDate',
       type: 'date',
-      defaultValue: new Date(),
-    }
+      required: true,
+      defaultValue: () => new Date(),
+      admin: {
+        readOnly: true,
+      },
+    },
   ],
 }
