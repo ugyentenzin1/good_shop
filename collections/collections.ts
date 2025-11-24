@@ -1,4 +1,4 @@
-import { CollectionConfig, PayloadRequest } from 'payload';
+import { CollectionConfig } from 'payload';
 
 export const MEDIA_COLLECTION: CollectionConfig = {
   slug: 'media',
@@ -35,59 +35,7 @@ export const MEDIA_COLLECTION: CollectionConfig = {
   ],
   access: {
     read: () => true,
-  },
-//   endpoints: [
-//     {
-//       path: '/file/:filename',
-//       method: 'get',
-//       handler: async (req: PayloadRequest) => {
-//         const url = req.url ? new URL(req.url) : null
-//         const encodedFilename = url?.pathname.split('/').pop();
-//         if (!encodedFilename) {
-//           return Response.json({ error: 'Filename required' }, { status: 400 })
-//         }
-// 
-//         // URL decode the filename to handle spaces and special characters
-//         const filename = decodeURIComponent(encodedFilename);
-// 
-//         try {
-//           // First, try to find the file exactly as requested
-//           const mediaDoc = await req.payload.find({
-//             collection: 'media',
-//             where: {
-//               filename: {
-//                 equals: filename,
-//               },  
-//             },
-//             limit: 1,
-//           })
-//           
-//           const sizeName = null
-//           const serverURL = req.payload.config.serverURL || 'http://localhost:3000'
-// 
-//           console.log(mediaDoc)
-// 
-//           if (!mediaDoc.docs.length) {
-//             return Response.json({ error: 'File not found' }, { status: 404 })
-//           }
-// 
-//           const media = mediaDoc.docs[0]
-// 
-//           console.log(media)
-// 
-//           // Redirect to the proper media URL with size if specified
-//           const redirectURL = sizeName
-//             ? `${serverURL}/api/media/${media.id}/${sizeName}`
-//             : `${serverURL}/api/media/${media.id}`
-// 
-//           return Response.redirect(redirectURL, 302)
-//         } catch (error) {
-//           console.error('Media file error:', error)
-//           return Response.json({ error: 'Internal server error' }, { status: 500 })
-//         }
-//       },
-//     },
-//   ],
+  }
 }
 
 export const PRODUCTS_COLLECTION: CollectionConfig = {
@@ -127,6 +75,63 @@ export const PRODUCTS_COLLECTION: CollectionConfig = {
       name: 'images',
       type: 'upload',
       relationTo: 'media',
+    }
+  ],
+}
+
+export const ORDERS_COLLECTION: CollectionConfig = {
+  slug: 'orders',
+  fields: [
+    {
+      name: 'products',
+      type: 'array',
+      fields: [
+        {
+          name: 'product',
+          type: 'relationship',
+          relationTo: 'products',
+          hasMany: true,
+        },
+      ],
+    },
+    {
+      name: 'total',
+      type: 'number',
+    },
+    {
+      name: 'status',
+      type: 'select',
+      options: [
+        { label: 'Pending', value: 'pending' },
+        { label: 'Shipped', value: 'shipped' },
+        { label: 'Delivered', value: 'delivered' },
+      ],
+    },
+    {
+      name: 'customer',
+      type: 'relationship',
+      relationTo: 'users',
+    },
+    {
+      name: 'address',
+      type: 'text',
+    },
+    {
+      name: 'paymentMethod',
+      type: 'select',
+      options: [
+        { label: 'Card', value: 'card' },
+        { label: 'PayPal', value: 'paypal' },
+      ],
+    },
+    {
+      name: 'cardNumber',
+      type: 'text',
+    },
+    {
+      name: 'updatedAt',
+      type: 'date',
+      defaultValue: new Date(),
     }
   ],
 }
