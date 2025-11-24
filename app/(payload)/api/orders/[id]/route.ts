@@ -5,14 +5,15 @@ import config from '@payload-config'
 // GET /api/orders/[id] - Get a specific order
 export async function GET(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const payload = await getPayload({ config })
 
     const order = await payload.findByID({
       collection: 'orders',
-      id: params.id,
+      id: id,
     })
 
     if (!order) {
@@ -35,15 +36,16 @@ export async function GET(
 // PATCH /api/orders/[id] - Update an order (e.g., status)
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
+    const { id } = await params
     const payload = await getPayload({ config })
     const body = await request.json()
 
     const updatedOrder = await payload.update({
       collection: 'orders',
-      id: params.id,
+      id: id,
       data: body,
     })
 
