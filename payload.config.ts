@@ -2,7 +2,8 @@ import sharp from 'sharp'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { buildConfig } from 'payload'
-import { PRODUCTS_COLLECTION, MEDIA_COLLECTION, ORDERS_COLLECTION } from './collections/collections'
+import { PRODUCTS_COLLECTION, MEDIA_COLLECTION, ORDERS_COLLECTION } from './collections/collections';
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 
 export default buildConfig({
   // If you'd like to use Rich Text, pass your editor here
@@ -23,6 +24,14 @@ export default buildConfig({
   db: mongooseAdapter({
     url: process.env.DATABASE_URI || false,
   }),
+  plugins: [
+    vercelBlobStorage({
+      collections: {
+        media: true,
+      },
+      token: process.env.BLOB_READ_WRITE_TOKEN,
+    }),
+  ],
   // If you want to resize images, crop, set focal point, etc.
   // make sure to install it and pass it to the config.
   // This is optional - if you don't need to do these things,

@@ -1,9 +1,9 @@
 import { CollectionConfig } from 'payload';
+import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 
 export const MEDIA_COLLECTION: CollectionConfig = {
   slug: 'media',
   upload: {
-    // Vercel Blob plugin handles storage automatically
     imageSizes: [
       {
         name: 'thumbnail',
