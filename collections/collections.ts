@@ -1,37 +1,9 @@
 import { CollectionConfig } from 'payload';
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 
 export const MEDIA_COLLECTION: CollectionConfig = {
   slug: 'media',
-  upload: process.env.NODE_ENV === 'production' && process.env.BLOB_READ_WRITE_TOKEN ? {
-    // Use Vercel Blob in production
-    adapter: vercelBlobStorage({
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-    }),
-    imageSizes: [
-      {
-        name: 'thumbnail',
-        width: 400,
-        height: 300,
-        position: 'centre',
-      },
-      {
-        name: 'card',
-        width: 768,
-        height: 1024,
-        position: 'centre',
-      },
-      {
-        name: 'tablet',
-        width: 1024,
-        position: 'centre',
-      },
-    ],
-    adminThumbnail: 'thumbnail',
-    mimeTypes: ['image/*'],
-  } : {
-    // Use local storage in development
-    staticDir: 'media',
+  upload: {
+    // Vercel Blob plugin handles storage automatically
     imageSizes: [
       {
         name: 'thumbnail',
