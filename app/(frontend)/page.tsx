@@ -19,14 +19,21 @@ export default async function Home() {
     },
   })
 
+  // Populate images for each product with error handling
   const populatedProducts = await Promise.all(
     products.map(async (product) => {
       if (product.images && typeof product.images === 'string') {
-        const imageDoc = await payload.findByID({
-          collection: 'media',
-          id: product.images,
-        })
-        return { ...product, images: imageDoc }
+        try {
+          const imageDoc = await payload.findByID({
+            collection: 'media',
+            id: product.images,
+          })
+          return { ...product, images: imageDoc }
+        } catch {
+          // If image doesn't exist, return product without image
+          console.warn(`Image with ID ${product.images} not found for product ${product.id}`)
+          return { ...product, images: null }
+        }
       }
       return product
     })
@@ -34,7 +41,7 @@ export default async function Home() {
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
-      <section className="relative bg-gradient-to-br from-blue-600 via-purple-600 to-pink-500 text-white">
+      <section className="relative bg-linear-to-br from-blue-600 via-purple-600 to-pink-500 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 md:py-32">
           <div className="grid md:grid-cols-2 gap-12 items-center">
             <div className="space-y-8">
@@ -134,7 +141,7 @@ export default async function Home() {
                 href={category.href}
                 className="group relative overflow-hidden rounded-2xl aspect-square"
               >
-                <div className={`absolute inset-0 bg-gradient-to-br ${category.color} group-hover:scale-110 transition-transform duration-300`}></div>
+                <div className={`absolute inset-0 bg-linear-to-br ${category.color} group-hover:scale-110 transition-transform duration-300`}></div>
                 <div className="relative h-full flex flex-col items-center justify-center text-white p-6">
                   <span className="text-5xl mb-3">{category.emoji}</span>
                   <h3 className="text-xl font-bold text-center">{category.name}</h3>
@@ -176,7 +183,7 @@ export default async function Home() {
                 >
                   <div className="aspect-square bg-gray-200 relative overflow-hidden">
                     {/* Placeholder for product image */}
-                      <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-100 to-gray-200 group-hover:scale-110 transition-transform duration-300">
+                      <div className="absolute inset-0 flex items-center justify-center bg-linear-to-br from-gray-100 to-gray-200 group-hover:scale-110 transition-transform duration-300">
                         {product.images && typeof product.images === 'object' && 'url' in product.images ? (
                           <Image src={product.images.url || ''} alt={product.images.alt || ''} fill className="object-cover" />
                         ) : (
@@ -235,7 +242,7 @@ export default async function Home() {
       </section>
 
       {/* Special Offer Banner */}
-      <section className="py-16 bg-gradient-to-r from-purple-600 to-pink-600 text-white">
+      <section className="py-16 bg-linear-to-r from-purple-600 to-pink-600 text-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center">
             <h2 className="text-3xl md:text-5xl font-bold mb-4">
