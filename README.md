@@ -39,6 +39,17 @@ Before deploying, you MUST set the following environment variables in your Verce
 
 1. `PAYLOAD_SECRET` - A complex and secure string for PayloadCMS
 2. `DATABASE_URI` - Your MongoDB connection string (must start with `mongodb://` or `mongodb+srv://`)
+3. `BLOB_READ_WRITE_TOKEN` - Vercel Blob storage token (get from Vercel dashboard)
+4. `NEXT_PUBLIC_SERVER_URL` - Your Vercel deployment URL
+
+#### How to get BLOB_READ_WRITE_TOKEN:
+
+1. Go to your **Vercel project dashboard**
+2. Click on **"Storage"** tab in the left sidebar
+3. Click **"Create Database"** → **"Blob"**
+4. Choose your database name (e.g., "media-storage")
+5. Click **"Create"**
+6. Copy the **"BLOB_READ_WRITE_TOKEN"** value
 
 #### How to set environment variables in Vercel:
 
@@ -55,6 +66,18 @@ Before deploying, you MUST set the following environment variables in your Verce
 6. Repeat for `DATABASE_URI`:
    - **Name:** `DATABASE_URI`
    - **Value:** `mongodb+srv://ugyen_db_user:Ojentaguero10@cluster0.isqncmf.mongodb.net/e-commerce-cms?retryWrites=true&w=majority` (copy from your local `.env` file)
+   - **Environment:** `Production`, `Preview`, `Development`
+   - Click "Add"
+
+7. Add `BLOB_READ_WRITE_TOKEN`:
+   - **Name:** `BLOB_READ_WRITE_TOKEN`
+   - **Value:** `vercel_blob_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx` (from Vercel Storage)
+   - **Environment:** `Production`, `Preview`, `Development`
+   - Click "Add"
+
+8. Add `NEXT_PUBLIC_SERVER_URL`:
+   - **Name:** `NEXT_PUBLIC_SERVER_URL`
+   - **Value:** `https://goodshop-roan.vercel.app` (your Vercel URL)
    - **Environment:** `Production`, `Preview`, `Development`
    - Click "Add"
 
