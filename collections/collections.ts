@@ -64,7 +64,13 @@ export const PRODUCTS_COLLECTION: CollectionConfig = {
       name: 'images',
       type: 'upload',
       relationTo: 'media',
-    }
+    },
+    {
+      name: 'stock',
+      type: 'number',
+      required: true,
+      defaultValue: 0,
+    },
   ],
 }
 

@@ -132,6 +132,7 @@ export interface Product {
   category?: string | null;
   featured?: ('yes' | 'no') | null;
   images?: (string | null) | Media;
+  stock: number;
   updatedAt: string;
   createdAt: string;
 }
@@ -331,6 +332,7 @@ export interface ProductsSelect<T extends boolean = true> {
   category?: T;
   featured?: T;
   images?: T;
+  stock?: T;
   updatedAt?: T;
   createdAt?: T;
 }
