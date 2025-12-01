@@ -4,6 +4,7 @@ import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { buildConfig } from 'payload'
 import { PRODUCTS_COLLECTION, MEDIA_COLLECTION, ORDERS_COLLECTION } from './collections/collections';
 import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
+import { s3Storage } from '@payloadcms/storage-s3';
 
 export default buildConfig({
   // If you'd like to use Rich Text, pass your editor here
@@ -25,12 +26,26 @@ export default buildConfig({
     url: process.env.DATABASE_URI || false,
   }),
   plugins: [
-    vercelBlobStorage({
+    // vercelBlobStorage({
+    //   collections: {
+    //     media: true,
+    //   },
+    //   token: process.env.BLOB_READ_WRITE_TOKEN,
+    // }),
+    s3Storage({
       collections: {
         media: true,
       },
-      token: process.env.BLOB_READ_WRITE_TOKEN,
-    }),
+      bucket: process.env.S3_BUCKET || '',
+      config: {
+        endpoint: process.env.S3_ENDPOINT || '',
+        credentials: {
+          accessKeyId: process.env.S3_ACCESS_KEY_ID || '',
+          secretAccessKey: process.env.S3_SECRET_ACCESS_KEY || '',
+        },
+        region: 'auto',
+      },
+    })
   ],
   // If you want to resize images, crop, set focal point, etc.
   // make sure to install it and pass it to the config.
