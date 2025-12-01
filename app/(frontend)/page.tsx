@@ -251,13 +251,13 @@ export default async function Home() {
             <p className="text-xl mb-8 text-purple-100">
               Limited time offer on selected items. Don't miss out!
             </p>
-            {/* <Link
+            <Link
               href="/deals"
               className="inline-flex items-center px-8 py-4 bg-white text-purple-600 font-semibold rounded-lg hover:bg-purple-50 transition shadow-lg text-lg group"
             >
               Shop Deals Now
               <ArrowRight className="ml-2 h-6 w-6 group-hover:translate-x-1 transition-transform" />
-            </Link> */}
+            </Link>
           </div>
         </div>
       </section>
