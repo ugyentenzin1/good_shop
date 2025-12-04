@@ -1,6 +1,6 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import ProductListClient from '../../(components)/products/ProductListClient'
+import ProductListClient from '../../products/ProductListClient'
 import Link from 'next/link'
 import { ArrowLeft } from 'lucide-react'
 import type { Product } from '@/payload-types'

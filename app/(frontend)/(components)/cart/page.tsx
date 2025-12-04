@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { Minus, Plus, Trash2, ShoppingBag, ArrowLeft } from 'lucide-react'
-import { useCart } from '../(context)/cart-context'
+import { useCart } from '../../(context)/cart-context'
 import Image from 'next/image'
 
 export default function CartPage() {

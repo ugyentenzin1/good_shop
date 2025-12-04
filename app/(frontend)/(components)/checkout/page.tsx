@@ -3,9 +3,9 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { ArrowLeft, CreditCard, Truck, Shield, CheckCircle } from 'lucide-react'
-import { useCart } from '../(context)/cart-context'
+import { useCart } from '../../(context)/cart-context'
 import Image from 'next/image'
-import { createOrder, type OrderData } from '../utils/order-utils'
+import { createOrder, type OrderData } from '../../utils/order-utils'
 
 interface FormData {
   // Customer Information
