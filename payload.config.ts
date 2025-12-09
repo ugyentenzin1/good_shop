@@ -16,6 +16,12 @@ export default buildConfig({
     MEDIA_COLLECTION,
     ORDERS_COLLECTION,
   ],
+
+  admin : {
+    autoLogin :{
+      email : 'ugyentevez32@gmail.com',
+    }
+  },
   // Your Payload secret - should be a complex and secure string, unguessable
   secret: process.env.PAYLOAD_SECRET || '',
   // Server URL for media and API endpoints
