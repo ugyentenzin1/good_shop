@@ -20,6 +20,9 @@ export default buildConfig({
   admin : {
     autoLogin :{
       email : 'ugyentevez32@gmail.com',
+    },
+    importMap :{
+      autoGenerate: true
     }
   },
   // Your Payload secret - should be a complex and secure string, unguessable
