@@ -3,8 +3,9 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical'
 import { mongooseAdapter } from '@payloadcms/db-mongodb'
 import { buildConfig } from 'payload'
 import { PRODUCTS_COLLECTION, MEDIA_COLLECTION, ORDERS_COLLECTION } from './collections/collections';
-import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 import { s3Storage } from '@payloadcms/storage-s3';
+import type { CustomComponent, LocalizationConfig } from 'payload';
+
 
 export default buildConfig({
   // If you'd like to use Rich Text, pass your editor here
@@ -23,7 +24,17 @@ export default buildConfig({
     },
     importMap :{
       autoGenerate: true
-    }
+    },
+    routes: {
+      logout: '/logout',
+    },
+  },
+  localization: {
+    defaultLocale: 'de',
+    locales: ['en', 'de'],
+  } as LocalizationConfig,
+  auth: {
+    jwtOrder: ['JWT', 'Bearer', 'cookie'],
   },
   // Your Payload secret - should be a complex and secure string, unguessable
   secret: process.env.PAYLOAD_SECRET || '',
@@ -35,12 +46,6 @@ export default buildConfig({
     url: process.env.DATABASE_URI || false,
   }),
   plugins: [
-    // vercelBlobStorage({
-    //   collections: {
-    //     media: true,
-    //   },
-    //   token: process.env.BLOB_READ_WRITE_TOKEN,
-    // }),
     s3Storage({
       collections: {
         media: true,
