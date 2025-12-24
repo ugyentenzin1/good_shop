@@ -29,6 +29,12 @@ export const MEDIA_COLLECTION: CollectionConfig = {
 
 export const PRODUCTS_COLLECTION: CollectionConfig = {
   slug: 'products',
+  access: {
+    read: ({ req }) => true,
+    create: () => false,
+    update: () => false,
+    delete: () => false,
+  },
   fields: [
     {
       name: 'title',
